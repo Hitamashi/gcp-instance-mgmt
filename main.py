@@ -1,11 +1,13 @@
 # [START app]
 import logging
 
-from flask import Flask
+from flask import Flask, render_template
 
 # [START imports]
 import requests
 import requests_toolbelt.adapters.appengine
+import json
+from urllib3.exceptions import HTTPError
 
 # Use the App Engine Requests adapter. This makes sure that Requests uses
 # URLFetch.
@@ -18,23 +20,34 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     # [START requests_start]
-    with open("cron.yaml") as f:
-		data = f.read()
-    return '<pre>' + data + '</pre>'
+    url = 'https://asia-northeast1-composite-drive-196403.cloudfunctions.net/getInstance'
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        instance = json.loads(response.text)
+        instance["staticIP"] = instance["networkInterfaces"][0]["accessConfigs"][0]["natIP"]
+        return render_template("index.html", ins=instance)
+    except ValueError:
+        return "Cannot get ts info"
+    except HTTPError:
+        return "Request error"
+
     # [END requests_start]
+
 
 @app.route('/startTS')
 def startTS():
-	# [START requests_get]
+    # [START requests_get]
     url = 'https://asia-northeast1-composite-drive-196403.cloudfunctions.net/startTS'
     response = requests.get(url)
     response.raise_for_status()
     return response.text
     # [END requests_get]
-    
+
+
 @app.route('/stopTS')
 def stopTS():
-	# [END requests_stop]
+    # [END requests_stop]
     url = 'https://asia-northeast1-composite-drive-196403.cloudfunctions.net/stopTS'
     response = requests.get(url)
     response.raise_for_status()

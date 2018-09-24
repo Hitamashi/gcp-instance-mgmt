@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Server status</title>
+	<link rel="stylesheet" type="text/css" href="static/style.css">
+	<script src="static/script.js"></script>
+</head>
+<body class="full-wrapper">
+	<div class="navigation">
+		<div class="nav-brand"><a href="#">Hitamashi</a></div>
+	</div>
+	<div class="container">
+		<div class="dash-wrapper">
+			<div class="dash-info"><span class="info_pull" id="date-now"></span>– date –</div>
+			<div class="dash-info"><span class="info_pull" id="month-now"></span>– month –</div>
+			<div class="dash-info"><span class="info_pull" id="year-now"></span>– year –</div>
+		</div>
+		
+		<ul class="flex-wrapper">
+			<li class="flex-item title-item up" >{{ ins.name }}</li>
+			{% if ins.status == "RUNNING" %}
+			<li class="flex-item" > {{ ins.status }} </li>
+			<li class="flex-item" > {{ ins.staticIP }} </a>
+			</li>
+			<li class="flex-item button-item"> 
+				<a href="ts3server://35.198.248.245?port=9987">
+					Connect
+				</a> 
+			</li>
+			{% else %}
+			<li class="flex-item title-item down" >{{ ins.name }}</li>
+			<li class="flex-item" > {{ ins.status }}</li>
+			<li class="flex-item" > {{ ins.staticIP }} </li>
+			<li class="flex-item button-item" id="start-server"> Start </li>
+			{% endif %}
+		</ul>
+	</div>
+	<div class="footer-wrapper">
+		<ul class="footer">
+			<li class="footer-info">Hitamashi</li>
+			<li class="footer-update" id="time-now"></li>
+		</ul>
+	</div>
+</body>
+</html>

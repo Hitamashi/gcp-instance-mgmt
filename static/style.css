@@ -1,0 +1,246 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Mono');
+
+html, body {
+	font-family: 'Fira Mono', monospace;
+	font-size: 1em;
+	letter-spacing: .06em;
+	background: linear-gradient(0deg, #434254, #605972);
+	margin: 0;
+}
+
+/*Navigation CSS*/
+.navigation {
+	list-style: none;
+	margin: 0;
+	background: #none;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-flow: row wrap;
+	justify-content: flex-start;
+	
+}
+
+.navigation a {
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	resize: vertical;
+	height: 60px;
+	color: #BABABA;
+	transition: all .5s ease;
+}
+
+.navigation .nav-brand a {
+	padding: 0 60px;
+}
+
+.navigation .nav-login a {
+	padding: 0 30px;
+}
+
+.nav-brand {
+	
+	line-height: 1.6em;
+	font-weight: thin;
+	font-size: .75rem;
+	font-size: 2em;
+	letter-spacing: .2em;
+}
+
+.nav-login{
+	line-height: 1.6em;
+	font-weight: thin;
+	font-size: .75rem;
+	margin-left: auto;
+}
+
+.navigation a:hover {
+	background: linear-gradient(45deg, #608DB5, #675EA1);
+	color: #fff;
+	transform: translateY(.5rem);
+	box-shadow: 0rem 1rem 2.5rem -.5rem hsla(0, 100%, 0%, .15);
+	
+}
+
+.full-wrapper{
+	display: flex;
+	min-height: 100vh;
+	flex-direction: column;
+}
+
+.container{
+	flex: 1;
+}
+
+/*Dashboard*/
+.dash-wrapper {
+	padding: 0;
+	margin: 0;
+	box-shadow: 0rem .5rem 2rem -0.5rem hsla(0, 100%, 0%, .25);
+	
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	
+	justify-content: center;
+}
+
+.dash-info {
+	height: 150px;
+	flex-basis: 33.33%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 200px;
+	resize: vertical;
+	
+	line-height: 2em;
+	color: #BABABA;
+	font-size: 1.5rem;
+	text-align: center;
+	letter-spacing: 0.15em;
+	transition: all .5s ease;
+}
+
+.info_pull {
+	font-size: 2.5em;
+	font-weight: bold;
+	color: #fff;
+}
+
+.dash-info:hover {
+
+}
+
+/*Server Status Styling*/
+.flex-wrapper {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	
+	-webkit-flex-flow: row wrap;
+	justify-content: flex-start;
+	align-items: center;
+	text-align:middle;
+}
+
+.flex-item {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	resize: vertical;
+	height: 85px;
+	flex-basis: 25%;
+	
+	line-height: 1.6em;
+	color: #fafafa;
+	font-weight: thin;
+	font-size: 1rem;
+	text-align: center;
+	letter-spacing: 0.15em;
+	transition: all .5s ease;
+}
+/*
+.flex-item:hover {
+  background: linear-gradient(285deg, hsla(114, 30%, 58%, 1.0), hsla(138, 22%, 54%, 1.0));
+  box-shadow: 0rem 1rem 2.5rem -.5rem hsla(0, 100%, 0%, .15);
+  transform: translateY(-.5rem);
+  color: #fff;
+}
+*/
+/*Footer Styling*/
+.footer-wrapper{
+
+}
+
+.footer {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	
+	-webkit-flex-flow: row wrap;
+	justify-content: flex-start;
+}
+
+.footer-info {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	resize: vertical;
+	height: 60px;
+	padding: 0 30px;
+	
+	line-height: 1.6em;
+	color: #BABABA;
+	font-weight: thin;
+	font-size: .8rem;
+	text-align: start;
+}
+
+.footer-update {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	resize: vertical;
+	height: 60px;
+	
+	line-height: 1.6em;
+	color: #BABABA;
+	font-weight: thin;
+	font-size: .8rem;
+	margin-left: auto;
+	padding: 0 30px;
+}
+
+
+/*Conditional Status*/
+.title-item{
+	font-size: 1.5em;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #fff;
+}
+
+.down{
+	background: linear-gradient(45deg, #DB5353, #A65179);
+}
+
+.up{
+	background: linear-gradient(285deg, hsla(114, 30%, 58%, 1.0), hsla(138, 22%, 54%, 1.0));
+}
+
+.button-item{
+	background: linear-gradient(45deg, #7A7782, #7A7782);
+	color: #BABABA;
+	cursor: pointer;
+}
+
+.button-item a:link{
+	text-decoration: none;
+	color: inherit;
+}
+
+.button-item:hover{
+	background: linear-gradient(285deg, hsla(114, 30%, 58%, 1.0), hsla(138, 22%, 54%, 1.0));
+	box-shadow: 0rem 1rem 2.5rem -.5rem hsla(0, 100%, 0%, .15);
+	transform: translateY(-.5rem);
+	color: #fff;
+}
