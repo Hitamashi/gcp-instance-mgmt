@@ -31,16 +31,18 @@
 		oReq.open('GET', "/startTS", true);
 	    oReq.send();
 	    ele.removeEventListener("click", startServer);
+	    ele.innerHTML = "Loading..."
+	    ele.classList.add("loading");
 	}
 
 	function startServerHandle(){
 		var ele = document.getElementById("start-server");
-		var end = new Date().getTime() + 30;
+		var end = new Date().getTime() + 30*1000;
 
 		if (oReq.status === 200) {
 			setInterval(function(){ 
 				var countDown = end - new Date().getTime();
-				ele.innerHTML = "Server starting in " + countDown;
+				ele.innerHTML = "Server starting in " + Math.floor(countDown/1000);
 
 				if (countDown < 0){
 					location.reload();

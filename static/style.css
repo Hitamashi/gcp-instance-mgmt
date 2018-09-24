@@ -227,6 +227,11 @@ html, body {
 	background: linear-gradient(285deg, hsla(114, 30%, 58%, 1.0), hsla(138, 22%, 54%, 1.0));
 }
 
+.loading{
+	background: linear-gradient(285deg, hsla(114, 30%, 58%, 1.0), hsla(138, 22%, 54%, 1.0)) !important;
+	color: #fff;
+}
+
 .button-item{
 	background: linear-gradient(45deg, #7A7782, #7A7782);
 	color: #BABABA;
