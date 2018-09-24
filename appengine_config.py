@@ -13,6 +13,10 @@
 # limitations under the License.
 
 from google.appengine.ext import vendor
+import warnings
 
 # Add any libraries installed in the "lib" folder.
 vendor.add('lib')
+
+from urllib3.contrib.appengine import AppEnginePlatformWarning
+warnings.filterwarnings('ignore', r'urllib3 is using URLFetch', AppEnginePlatformWarning)
