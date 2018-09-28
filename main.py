@@ -41,7 +41,7 @@ def index():
 @app.route('/startTS')
 def startTS():
     # [START requests_get]
-    url = 'https://asia-northeast1-composite-drive-196403.cloudfunctions.net/startTS'
+    url = 'https://asia-northeast1-composite-drive-196403.cloudfunctions.net/startInstance'
     response = requests.get(url, params={'zone': zone, 'vm': vm})
     response.raise_for_status()
     return response.text
@@ -51,7 +51,7 @@ def startTS():
 @app.route('/stopTS')
 def stopTS():
     # [END requests_stop]
-    url = 'https://asia-northeast1-composite-drive-196403.cloudfunctions.net/stopTS'
+    url = 'https://asia-northeast1-composite-drive-196403.cloudfunctions.net/stopInstance'
     response = requests.get(url, params={'zone': zone, 'vm': vm})
     response.raise_for_status()
     return response.text
