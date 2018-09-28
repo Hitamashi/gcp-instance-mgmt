@@ -25,7 +25,7 @@ exports.startInstance = function startInstance(req, res) {
 		res.status(400).send("Missing parameters")
 	}
 	
-    var zone = compute.zone('req.query.zone');
+    var zone = compute.zone(req.query.zone);
     var vm = zone.vm(req.query.vm);
     vm.start(function(err, operation, apiResponse) {
     	if (err) {
@@ -43,7 +43,7 @@ exports.stopInstance = function stopInstance(req, res) {
 		res.status(400).send("Missing parameters")
 	}
 
-    var zone = compute.zone('req.query.zone');
+    var zone = compute.zone(req.query.zone);
     var vm = zone.vm(req.query.vm);
     vm.stop(function(err, operation, apiResponse) {
     	if (err) {
