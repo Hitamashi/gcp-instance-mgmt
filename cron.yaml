@@ -1,7 +1,7 @@
 cron:
 - description: Stop ts server
   url: /stopTS
-  schedule: every day 05:00
+  schedule: every day 04:00
   timezone: Asia/Ho_Chi_Minh
 - description: Start ts server weekend
   url: /startTS
@@ -9,5 +9,5 @@ cron:
   timezone: Asia/Ho_Chi_Minh
 - description: Start ts server workday
   url: /startTS
-  schedule: every monday, tuesday, wednesday, thursday, friday 18:00
+  schedule: every monday, tuesday, wednesday, thursday, friday 20:00
   timezone: Asia/Ho_Chi_Minh

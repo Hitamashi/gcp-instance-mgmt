@@ -16,13 +16,16 @@ requests_toolbelt.adapters.appengine.monkeypatch()
 
 app = Flask(__name__)
 
+zone = 'asia-southeast1-b'
+vm = 'ts'
+
 
 @app.route('/')
 def index():
     # [START requests_start]
     url = 'https://asia-northeast1-composite-drive-196403.cloudfunctions.net/getInstance'
     try:
-        response = requests.get(url)
+        response = requests.get(url, params={'zone': zone, 'vm': vm})
         response.raise_for_status()
         instance = json.loads(response.text)
         instance["staticIP"] = instance["networkInterfaces"][0]["accessConfigs"][0]["natIP"]
@@ -39,7 +42,7 @@ def index():
 def startTS():
     # [START requests_get]
     url = 'https://asia-northeast1-composite-drive-196403.cloudfunctions.net/startTS'
-    response = requests.get(url)
+    response = requests.get(url, params={'zone': zone, 'vm': vm})
     response.raise_for_status()
     return response.text
     # [END requests_get]
@@ -49,7 +52,7 @@ def startTS():
 def stopTS():
     # [END requests_stop]
     url = 'https://asia-northeast1-composite-drive-196403.cloudfunctions.net/stopTS'
-    response = requests.get(url)
+    response = requests.get(url, params={'zone': zone, 'vm': vm})
     response.raise_for_status()
     return response.text
     # [END requests_stop]
