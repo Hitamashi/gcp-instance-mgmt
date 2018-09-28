@@ -40,13 +40,15 @@
 		var end = new Date().getTime() + 30*1000;
 
 		if (oReq.status === 200) {
-			setInterval(function(){ 
+			myInterval = setInterval(function(){ 
 				var countDown = end - new Date().getTime();
-				ele.innerHTML = "Server starting in " + Math.floor(countDown/1000);
 
 				if (countDown < 0){
+					clearInterval(myInterval);
 					location.reload();
 				}
+				
+				ele.innerHTML = "Server starting in " + Math.floor(countDown/1000);
 			}, 1000);
 		} else {
 			ele.addEventListener("click", startServer);
