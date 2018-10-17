@@ -13,7 +13,16 @@ First, install the dependencies
 pip install -r requirements.txt -t lib
 ```
 
-Then ro deploy, run:
+Setup environment variables:
+```
+# Cloudfunction endpoint format https://[region]-[projectid].cloudfunctions.net/
+export GCP_CLOUDFUNCTION_URL=<Endpoint to cloudfunctions>
+export  GCP_DEFAULT_ZONE=<default zone>
+export  GCP_INSTANCE_NAME=<the instance name>
+```
+
+You need to setup [gcloud](https://cloud.google.com/sdk/install).  
+Then to deploy, run:
 ```
 ./deploy.sh <project-id>
 ```
