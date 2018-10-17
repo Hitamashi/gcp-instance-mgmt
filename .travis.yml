@@ -1,24 +1,20 @@
 sudo: false
-
 language: python
 python:
-  - "2.7"
-
+- '2.7'
 install:
-  - pip install -r requirements.txt -t lib
-
+- pip install -r requirements.txt -t lib
 script:
-  - echo 'Skipping test'
-
-# Cache Gcloud SDK between commands
+- echo 'Skipping test'
 cache:
   yarn: true
+  pip: true
   directories:
   - "$HOME/google-cloud-sdk/"
   - lib
-
 before_deploy:
-- if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
+- if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export
+  CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi
 - source /home/travis/google-cloud-sdk/path.bash.inc
 - gcloud --quiet version
 - gcloud --quiet components update
@@ -26,8 +22,9 @@ before_deploy:
   -in gcp-secret.json.enc -out gcp-secret.json -d
 - gcloud auth activate-service-account --key-file gcp-secret.json
 - gcloud config set project $GCP_PROJECT
-
+- pip install -r requirements.txt -t lib
 deploy:
   provider: script
+  skip_cleanup: true
   script:
-    - bash deploy.sh $GCP_PROJECT
+  - bash deploy.sh $GCP_PROJECT

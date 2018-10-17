@@ -32,5 +32,5 @@ cp app.yaml app-deploy.yaml
 echo "env_variables:" >> app-deploy.yaml
 echo "  GCP_CLOUDFUNCTION_URL: \"$GCP_CLOUDFUNCTION_URL\"" >> app-deploy.yaml
 echo "  GCP_DEFAULT_ZONE: \"$GCP_DEFAULT_ZONE\"" >> app-deploy.yaml
-echo "  GCP_PROJECT: \"$GCP_DEFAULT_ZONE\"" >> app-deploy.yaml
+echo "  GCP_INSTANCE_NAME: \"$GCP_INSTANCE_NAME\"" >> app-deploy.yaml
 gcloud app deploy -q app-deploy.yaml cron.yaml
