@@ -14,18 +14,19 @@ echo Project ID $PROJECTID
 gcloud config set project $PROJECTID
 
 echo Deploy Cloud function
+
 gcloud functions deploy getInstance \
-  --source https://source.developers.google.com/projects/${PROJECT_ID}/repos/gce-compute/moveable-aliases/master/paths/cloudfunction \
-  --trigger-http --entry-point=getInstance --region=asia-northeast1	
+  --source https://source.developers.google.com/projects/${PROJECTID}/repos/gce-compute/moveable-aliases/master/paths/cloudfunction \
+  --trigger-http --entry-point=getInstance --region=asia-northeast1	--memory=128MB
 
 gcloud functions deploy startInstance \
-  --source https://source.developers.google.com/projects/${PROJECT_ID}/repos/gce-compute/moveable-aliases/master/paths/cloudfunction \
-  --trigger-http --entry-point=startInstance --region=asia-northeast1	
+  --source https://source.developers.google.com/projects/${PROJECTID}/repos/gce-compute/moveable-aliases/master/paths/cloudfunction \
+  --trigger-http --entry-point=startInstance --region=asia-northeast1 --memory=128MB
 
 gcloud functions deploy stopInstance \
-  --source https://source.developers.google.com/projects/${PROJECT_ID}/repos/gce-compute/moveable-aliases/master/paths/cloudfunction \
-  --trigger-http --entry-point=stopInstance --region=asia-northeast1	
+  --source https://source.developers.google.com/projects/${PROJECTID}/repos/gce-compute/moveable-aliases/master/paths/cloudfunction \
+  --trigger-http --entry-point=stopInstance --region=asia-northeast1 --memory=128MB
 
-echo Deploy App engine & Cron job
+echo "Deploy App engine & Cron job"
 gcloud app deploy -q app.yaml cron.yaml
 
