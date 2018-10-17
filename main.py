@@ -7,6 +7,7 @@ from flask import Flask, render_template
 import requests
 import requests_toolbelt.adapters.appengine
 import json
+import os
 from urllib3.exceptions import HTTPError
 
 # Use the App Engine Requests adapter. This makes sure that Requests uses
@@ -16,14 +17,15 @@ requests_toolbelt.adapters.appengine.monkeypatch()
 
 app = Flask(__name__)
 
-zone = 'asia-southeast1-b'
-vm = 'ts'
+zone = os.getenv('GCP_DEFAULT_ZONE')
+vm = os.getenv('GCP_INSTANCE_NAME')
+url_endpoint = os.getenv('GCP_CLOUDFUNCTION_URL')
 
 
 @app.route('/')
 def index():
     # [START requests_start]
-    url = 'https://asia-northeast1-composite-drive-196403.cloudfunctions.net/getInstance'
+    url = url_endpoint + '/getInstance'
     try:
         response = requests.get(url, params={'zone': zone, 'vm': vm})
         response.raise_for_status()
@@ -41,7 +43,7 @@ def index():
 @app.route('/startTS')
 def startTS():
     # [START requests_get]
-    url = 'https://asia-northeast1-composite-drive-196403.cloudfunctions.net/startInstance'
+    url = url_endpoint + '/startInstance'
     response = requests.get(url, params={'zone': zone, 'vm': vm})
     response.raise_for_status()
     return response.text
@@ -51,7 +53,7 @@ def startTS():
 @app.route('/stopTS')
 def stopTS():
     # [END requests_stop]
-    url = 'https://asia-northeast1-composite-drive-196403.cloudfunctions.net/stopInstance'
+    url = url_endpoint + '/stopInstance'
     response = requests.get(url, params={'zone': zone, 'vm': vm})
     response.raise_for_status()
     return response.text
