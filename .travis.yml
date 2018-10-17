@@ -7,6 +7,9 @@ python:
 install:
   - pip install -r requirements.txt -t lib
 
+script:
+  - echo 'Skipping test'
+
 # Cache Gcloud SDK between commands
 cache:
   yarn: true
@@ -27,4 +30,4 @@ before_deploy:
 deploy:
   provider: script
   script:
-    - ./deploy.sh $GCP_PROJECT
+    - bash deploy.sh $GCP_PROJECT
