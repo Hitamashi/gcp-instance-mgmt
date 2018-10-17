@@ -30,4 +30,3 @@ deploy:
   - bash deploy.sh $GCP_PROJECT
   on:
     all_branches: true
-
