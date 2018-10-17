@@ -13,6 +13,7 @@ script:
 # Cache Gcloud SDK between commands
 cache:
   yarn: true
+  pip: true
   directories:
   - "$HOME/google-cloud-sdk/"
   - lib
@@ -26,8 +27,12 @@ before_deploy:
   -in gcp-secret.json.enc -out gcp-secret.json -d
 - gcloud auth activate-service-account --key-file gcp-secret.json
 - gcloud config set project $GCP_PROJECT
+- pip install -r requirements.txt -t lib
 
 deploy:
   provider: script
+  skip_cleanup: true
   script:
     - bash deploy.sh $GCP_PROJECT
+  on:
+    all_branches: true
