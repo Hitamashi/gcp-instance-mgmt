@@ -27,4 +27,4 @@ deploy:
   provider: script
   skip_cleanup: true
   script:
-  - bash deploy.sh $GCP_PROJECT
+  - bash deploy.sh remote $GCP_PROJECT

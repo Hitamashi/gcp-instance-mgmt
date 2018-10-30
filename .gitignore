@@ -1,3 +1,5 @@
+# App config temp
+app-deploy.yaml
 # GAE secret
 gcp-secret.json
 # Byte-compiled / optimized / DLL files
