@@ -8,7 +8,7 @@ deployCF() {
 	echo "Deploy Cloud Function $1 in $3 region"
 	gcloud functions deploy $1 \
   	--source https://source.developers.google.com/projects/${PROJECTID}/repos/gce-compute/moveable-aliases/master/paths/cloudfunction \
-  	--trigger-http --entry-point=$2 --region=$3	--memory=$4
+  	--trigger-http --entry-point=$2 --region=$3 --memory=$4 --runtime nodejs6
 }
 
 configGenerate() {
