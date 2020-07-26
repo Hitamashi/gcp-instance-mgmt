@@ -107,5 +107,5 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-#GCP cre for local
+# GCP cre for local
 composite-drive-*.json

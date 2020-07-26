@@ -22,6 +22,8 @@ configGenerate() {
 	echo "  GCP_DEFAULT_ZONE: \"$GCP_DEFAULT_ZONE\"" >> app-deploy.yaml
 	echo "  GCP_INSTANCE_NAME: \"$GCP_INSTANCE_NAME\"" >> app-deploy.yaml
 	[[ ! -z $GOOGLE_APPLICATION_CREDENTIALS ]] && echo "  GOOGLE_APPLICATION_CREDENTIALS: \"$GOOGLE_APPLICATION_CREDENTIALS\"" >> app-deploy.yaml
+
+	echo "Config generated!"
 }
 
 remote() {
@@ -59,6 +61,7 @@ usage() {
     echo "-----------Parameter-------------"
     echo "local : Deploy app in local env"
     echo "remote: Deploy app in GAE (need project id)"
+	echo "config: Generate config file app-deploy.yaml"
 }
 
 case "$1" in
@@ -77,5 +80,8 @@ case "$1" in
 			exit 1
 		fi
 		;;
+	config)
+		echo "Generate config file in app-deploy.yaml"
+		configGenerate
     *) usage ;;
 esac

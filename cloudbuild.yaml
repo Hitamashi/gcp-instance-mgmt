@@ -1,0 +1,16 @@
+steps:
+- name: 'ubuntu'
+  env:
+  - 'GCP_CLOUDFUNCTION_URL=${_GCP_CLOUDFUNCTION_URL}'
+  - 'GCP_DEFAULT_ZONE=${_GCP_DEFAULT_ZONE}'
+  - 'GCP_INSTANCE_NAME=${_GCP_INSTANCE_NAME}'
+  args:
+  - ./deploy.sh
+  - config
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+  - app
+  - deploy
+  - -q
+  - app-deploy.yaml
+  - cron.yaml
