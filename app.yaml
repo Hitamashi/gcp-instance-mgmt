@@ -4,5 +4,5 @@ handlers:
 - url: /static
   static_dir: static
 - url: /.*
-  script: main.app
+  script: auto
   secure: always
