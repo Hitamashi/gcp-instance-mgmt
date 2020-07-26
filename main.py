@@ -5,14 +5,11 @@ from flask import Flask, render_template
 
 # [START imports]
 import requests
-import requests_toolbelt.adapters.appengine
 import json
 import os
 from urllib3.exceptions import HTTPError
+from googleapiclient.discovery import build
 
-# Use the App Engine Requests adapter. This makes sure that Requests uses
-# URLFetch.
-requests_toolbelt.adapters.appengine.monkeypatch()
 # [END imports]
 
 app = Flask(__name__)
@@ -34,11 +31,41 @@ def index():
         return render_template("index.html", ins=instance)
     except ValueError:
         return "Cannot get ts info"
-    except HTTPError:
-        return "Request error"
+    except HTTPError as ex:
+        logging.exception(ex)
+        return "Request error", 500
 
     # [END requests_start]
 
+
+@app.route('/list')
+def list():
+    # [START requests_start]
+    try:
+        compute = build('compute', 'v1', cache_discovery=False)
+        params = {
+            'project' : os.getenv('GOOGLE_CLOUD_PROJECT'),
+            'zone' : zone,
+            'instance' : vm,
+            'fields' : 'id,name,status,networkInterfaces(accessConfigs/natIP)'
+        }
+        instance = compute.instances().get(**params).execute() # pylint: disable=E1101
+
+        # Can query list with  compute.instances().list(project=..., zone=..., fields=...)cc
+        #     project =  os.getenv('GOOGLE_CLOUD_PROJECT'),
+        #     zone = zone,
+        #     fields = 'items(id,name,status,networkInterfaces/accessConfigs/natIP,zone)'
+        #
+        logging.info(instance)
+        instance['staticIP'] = instance["networkInterfaces"][0]["accessConfigs"][0]["natIP"]
+        return render_template("index.html", ins=instance)
+    except ValueError:
+        return "Cannot get ts info"
+    except HTTPError as ex:
+        logging.exception(ex)
+        return "Request error", 500
+
+    # [END requests_start]
 
 @app.route('/startTS')
 def startTS():

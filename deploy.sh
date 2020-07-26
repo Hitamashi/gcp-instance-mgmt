@@ -12,11 +12,16 @@ deployCF() {
 }
 
 configGenerate() {
+	if [ -f app-deploy.yaml ]; then
+		echo "Deploy file exists!"
+		return
+	fi
 	cp app.yaml app-deploy.yaml
 	echo "env_variables:" >> app-deploy.yaml
 	echo "  GCP_CLOUDFUNCTION_URL: \"$GCP_CLOUDFUNCTION_URL\"" >> app-deploy.yaml
 	echo "  GCP_DEFAULT_ZONE: \"$GCP_DEFAULT_ZONE\"" >> app-deploy.yaml
 	echo "  GCP_INSTANCE_NAME: \"$GCP_INSTANCE_NAME\"" >> app-deploy.yaml
+	[[ ! -z $GOOGLE_APPLICATION_CREDENTIALS ]] && echo "  GOOGLE_APPLICATION_CREDENTIALS: \"$GOOGLE_APPLICATION_CREDENTIALS\"" >> app-deploy.yaml
 }
 
 remote() {
@@ -44,7 +49,7 @@ remote() {
 local() {
 	echo "Run app on local machine, port $1"
 	configGenerate
-	dev_appserver.py app-deploy.yaml --port=$1
+	dev_appserver.py app-deploy.yaml --port=$1 --log_level=debug --application=composite-drive-196403
 }
 
 usage() {

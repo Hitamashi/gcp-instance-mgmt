@@ -1,5 +1,4 @@
-runtime: python27
-api_version: 1
+runtime: python37
 threadsafe: yes
 
 handlers:
@@ -7,3 +6,4 @@ handlers:
   static_dir: static
 - url: /.*
   script: main.app
+  secure: always
