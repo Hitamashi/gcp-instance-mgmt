@@ -1,5 +1,4 @@
 runtime: python37
-threadsafe: yes
 
 handlers:
 - url: /static
