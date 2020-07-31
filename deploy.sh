@@ -7,16 +7,23 @@
 deployCF() {
 	echo "Deploy Cloud Function $1 in $3 region"
 	gcloud functions deploy $1 \
-  	--source https://source.developers.google.com/projects/${PROJECTID}/repos/gce-compute/moveable-aliases/master/paths/cloudfunction \
+  	--source ./cloudfunction \
   	--trigger-http --entry-point=$2 --region=$3 --memory=$4 --runtime nodejs6
 }
 
 configGenerate() {
+	if [ -f app-deploy.yaml ]; then
+		echo "Deploy file exists!"
+		return
+	fi
 	cp app.yaml app-deploy.yaml
 	echo "env_variables:" >> app-deploy.yaml
 	echo "  GCP_CLOUDFUNCTION_URL: \"$GCP_CLOUDFUNCTION_URL\"" >> app-deploy.yaml
 	echo "  GCP_DEFAULT_ZONE: \"$GCP_DEFAULT_ZONE\"" >> app-deploy.yaml
 	echo "  GCP_INSTANCE_NAME: \"$GCP_INSTANCE_NAME\"" >> app-deploy.yaml
+	[[ ! -z $GOOGLE_APPLICATION_CREDENTIALS ]] && echo "  GOOGLE_APPLICATION_CREDENTIALS: \"$GOOGLE_APPLICATION_CREDENTIALS\"" >> app-deploy.yaml
+
+	echo "Config generated!"
 }
 
 remote() {
@@ -44,7 +51,7 @@ remote() {
 local() {
 	echo "Run app on local machine, port $1"
 	configGenerate
-	dev_appserver.py app-deploy.yaml --port=$1
+	dev_appserver.py app-deploy.yaml --port=$1 --log_level=debug --application=composite-drive-196403
 }
 
 usage() {
@@ -54,6 +61,7 @@ usage() {
     echo "-----------Parameter-------------"
     echo "local : Deploy app in local env"
     echo "remote: Deploy app in GAE (need project id)"
+	echo "config: Generate config file app-deploy.yaml"
 }
 
 case "$1" in
@@ -71,6 +79,10 @@ case "$1" in
 			echo "Missing project id"
 			exit 1
 		fi
+		;;
+	config)
+		echo "Generate config file in app-deploy.yaml"
+		configGenerate
 		;;
     *) usage ;;
 esac
