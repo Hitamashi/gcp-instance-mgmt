@@ -1,7 +1,7 @@
 # [START app]
 import logging
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 # [START imports]
 import requests
@@ -20,47 +20,38 @@ url_endpoint = os.getenv('GCP_CLOUDFUNCTION_URL')
 
 
 @app.route('/')
-def index():
-    # [START requests_start]
-    url = url_endpoint + '/getInstance'
-    try:
-        response = requests.get(url, params={'zone': zone, 'vm': vm})
-        response.raise_for_status()
-        instance = json.loads(response.text)
-        instance["staticIP"] = instance["networkInterfaces"][0]["accessConfigs"][0]["natIP"]
-        return render_template("index.html", ins=instance)
-    except ValueError:
-        return "Cannot get ts info"
-    except HTTPError as ex:
-        logging.exception(ex)
-        return "Request error", 500
-
-    # [END requests_start]
-
-
-@app.route('/list')
 def list():
     # [START requests_start]
     try:
         compute = build('compute', 'v1', cache_discovery=False)
         params = {
-            'project' : os.getenv('GOOGLE_CLOUD_PROJECT'),
-            'zone' : zone,
-            'instance' : vm,
-            'fields' : 'id,name,status,networkInterfaces(accessConfigs/natIP)'
+            'project': os.getenv('GOOGLE_CLOUD_PROJECT'),
+            'fields': 'items/*/instances(id,name,status,labels,networkInterfaces/accessConfigs/natIP)'
         }
-        instance = compute.instances().get(**params).execute() # pylint: disable=E1101
 
-        # Can query list with  compute.instances().list(project=..., zone=..., fields=...)cc
-        #     project =  os.getenv('GOOGLE_CLOUD_PROJECT'),
-        #     zone = zone,
-        #     fields = 'items(id,name,status,networkInterfaces/accessConfigs/natIP,zone)'
-        #
-        logging.info(instance)
-        instance['staticIP'] = instance["networkInterfaces"][0]["accessConfigs"][0]["natIP"]
-        return render_template("index.html", ins=instance)
+        instances = []
+        request = compute.instances().aggregatedList(**params) # pylint: disable=E1101
+        while request is not None:
+            response = request.execute()
+
+            for name, instances_scoped_list in response['items'].items():
+                print("{}\n{}".format(name,instances_scoped_list))
+                for i in instances_scoped_list['instances']:
+                    i['zone'] = name.split('/')[-1]
+                    try:
+                        i['IP'] = i['networkInterfaces'][0]['accessConfigs'][0]['natIP']
+                    except Exception as ex:
+                        i['IP'] = '-'
+                    try:
+                        i['function'] = i['labels']['function']
+                    except Exception as ex:
+                        i['function'] = '-'
+                instances = instances + instances_scoped_list.get('instances', [])
+
+            request = compute.instances().aggregatedList_next(previous_request=request, previous_response=response)  # pylint: disable=E1101
+        return render_template("index.html", instances=instances)
     except ValueError:
-        return "Cannot get ts info"
+        return "Cannot get servers info"
     except HTTPError as ex:
         logging.exception(ex)
         return "Request error", 500
@@ -70,10 +61,17 @@ def list():
 @app.route('/startTS')
 def startTS():
     # [START requests_get]
-    url = url_endpoint + '/startInstance'
-    response = requests.get(url, params={'zone': zone, 'vm': vm})
-    response.raise_for_status()
-    return response.text
+    compute = build('compute', 'v1', cache_discovery=False)
+    params = {
+        'project': os.getenv('GOOGLE_CLOUD_PROJECT'),
+        'zone': request.args.get('zone', zone),
+        'instance': request.args.get('vm', vm)
+    }
+    res = compute.instances().start(**params).execute() # pylint: disable=E1101
+    if 'error' in res:
+        logging.debug(res['error'])
+        return "Error occored!", 500
+    return "", 200
     # [END requests_get]
 
 

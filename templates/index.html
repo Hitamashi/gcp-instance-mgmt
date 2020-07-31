@@ -18,25 +18,34 @@
 			<div class="dash-info"><span class="info_pull" id="month-now"></span>– month –</div>
 			<div class="dash-info"><span class="info_pull" id="year-now"></span>– year –</div>
 		</div>
-		
+{% for ins in instances %}
 		<ul class="flex-wrapper">
-			{% if ins.status == "RUNNING" %}
-			<li class="flex-item title-item up" >{{ ins.name }}</li>
+			<li class="flex-item title-item {{'up' if ins.status == 'RUNNING' else 'down'}}" >
+				<div>
+					<div>{{ ins.name }}</div>
+					<div class='small'>{{ ins.zone }}</div>
+				</div>
+			</li>
 			<li class="flex-item" > {{ ins.status }} </li>
-			<li class="flex-item" > {{ ins.staticIP }} </a>
-			</li>
-			<li class="flex-item button-item"> 
-				<a href="ts3server://35.198.248.245?port=9987">
+			<li class="flex-item" > {{ ins.IP }} </li>
+
+	{% if ins.status == "RUNNING" %}
+		{% if ins.function == "teamspeak" %}
+			<li class="flex-item button-item">
+				<a href="ts3server://{{ins.IP}}?port=9987">
 					Connect
-				</a> 
+				</a>
 			</li>
-			{% else %}
-			<li class="flex-item title-item down" >{{ ins.name }}</li>
-			<li class="flex-item" > {{ ins.status }}</li>
-			<li class="flex-item" > {{ ins.staticIP }} </li>
-			<li class="flex-item button-item" id="start-server"> Start </li>
-			{% endif %}
+		{% else %}
+			<li class="flex-item button-item loading">
+				Started
+			</li>
+		{% endif %}
+	{% else %}
+			<li class="flex-item button-item start-server" data-zone="{{ins.zone}}" data-vm="{{ins.name}}"> Start </li>
+	{% endif %}
 		</ul>
+{% endfor %}
 	</div>
 	<div class="footer-wrapper">
 		<ul class="footer">
