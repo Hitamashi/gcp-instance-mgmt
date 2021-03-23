@@ -12,7 +12,7 @@ remote() {
 		echo "Project ID $PROJECT_ID"
 	else
 		echo Project $1 Not Found!
-		exit
+		exit 1
 	fi
 
 	echo "Deploy App engine & Cron job"

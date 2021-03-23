@@ -4,3 +4,7 @@ steps:
   args:
   - ./deploy.sh
   - remote
+  env:
+  - 'PROJECT_ID=${PROJECT_ID}'
+  - '_GAE_PROMOTE=${_GAE_PROMOTE}'
+  - '_GAE_VERSION=${_GAE_VERSION}'
