@@ -1,11 +1,10 @@
 steps:
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'bash'
-  env:
-  - 'GCP_CLOUDFUNCTION_URL=${_GCP_CLOUDFUNCTION_URL}'
-  - 'GCP_DEFAULT_ZONE=${_GCP_DEFAULT_ZONE}'
-  - 'GCP_INSTANCE_NAME=${_GCP_INSTANCE_NAME}'
   args:
   - ./deploy.sh
   - remote
-  - ${PROJECT_ID}
+  env:
+  - 'PROJECT_ID=${PROJECT_ID}'
+  - '_GAE_PROMOTE=${_GAE_PROMOTE}'
+  - '_GAE_VERSION=${_GAE_VERSION}'

@@ -12,7 +12,7 @@ html, body {
 .navigation {
 	list-style: none;
 	margin: 0;
-	background: #none;
+	background: none;
 	display: -webkit-box;
 	display: -moz-box;
 	display: -ms-flexbox;
@@ -20,7 +20,7 @@ html, body {
 	display: flex;
 	-webkit-flex-flow: row wrap;
 	justify-content: flex-start;
-	
+
 }
 
 .navigation a {
@@ -43,7 +43,7 @@ html, body {
 }
 
 .nav-brand {
-	
+
 	line-height: 1.6em;
 	font-weight: thin;
 	font-size: .75rem;
@@ -63,7 +63,7 @@ html, body {
 	color: #fff;
 	transform: translateY(.5rem);
 	box-shadow: 0rem 1rem 2.5rem -.5rem hsla(0, 100%, 0%, .15);
-	
+
 }
 
 .full-wrapper{
@@ -81,13 +81,13 @@ html, body {
 	padding: 0;
 	margin: 0;
 	box-shadow: 0rem .5rem 2rem -0.5rem hsla(0, 100%, 0%, .25);
-	
+
 	display: -webkit-box;
 	display: -moz-box;
 	display: -ms-flexbox;
 	display: -webkit-flex;
 	display: flex;
-	
+
 	justify-content: center;
 }
 
@@ -99,7 +99,7 @@ html, body {
 	justify-content: center;
 	height: 200px;
 	resize: vertical;
-	
+
 	line-height: 2em;
 	color: #BABABA;
 	font-size: 1.5rem;
@@ -130,16 +130,16 @@ html, body {
 
 /*Server Status Styling*/
 .flex-wrapper {
-	padding: 0;
+	padding: 0px 0px 1px 0px;
 	margin: 0;
 	list-style: none;
-	
+
 	display: -webkit-box;
 	display: -moz-box;
 	display: -ms-flexbox;
 	display: -webkit-flex;
 	display: flex;
-	
+
 	-webkit-flex-flow: row wrap;
 	justify-content: flex-start;
 	align-items: center;
@@ -153,7 +153,7 @@ html, body {
 	resize: vertical;
 	height: 85px;
 	flex-basis: 25%;
-	
+
 	line-height: 1.6em;
 	color: #fafafa;
 	font-weight: thin;
@@ -186,13 +186,13 @@ html, body {
 	padding: 0;
 	margin: 0;
 	list-style: none;
-	
+
 	display: -webkit-box;
 	display: -moz-box;
 	display: -ms-flexbox;
 	display: -webkit-flex;
 	display: flex;
-	
+
 	-webkit-flex-flow: row wrap;
 	justify-content: flex-start;
 }
@@ -204,7 +204,7 @@ html, body {
 	resize: vertical;
 	height: 60px;
 	padding: 0 30px;
-	
+
 	line-height: 1.6em;
 	color: #BABABA;
 	font-weight: thin;
@@ -218,7 +218,7 @@ html, body {
 	justify-content: center;
 	resize: vertical;
 	height: 60px;
-	
+
 	line-height: 1.6em;
 	color: #BABABA;
 	font-weight: thin;
@@ -277,6 +277,13 @@ html, body {
 	color: #fff;
 }
 
+.small{
+	font-size: 0.6em;
+	font-weight: 400;
+	line-height: initial;
+	color: #BABABA;
+}
+
 @media only screen and (max-width: 600px){
 	.title-item{
 		font-size: 0.8em;
@@ -284,5 +291,17 @@ html, body {
 
 	.button-item{
 		flex-basis: 100%;
+	}
+}
+
+@media only screen and (max-width: 1024px){
+	.title-item{
+		font-size: 1.2em;
+	}
+	.flex-item{
+		height: 75px;
+		line-height: 1.2em;
+		font-size: 0.9em;
+		letter-spacing: normal;
 	}
 }
