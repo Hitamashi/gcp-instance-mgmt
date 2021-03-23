@@ -14,11 +14,6 @@ from googleapiclient.discovery import build
 
 app = Flask(__name__)
 
-zone = os.getenv('GCP_DEFAULT_ZONE')
-vm = os.getenv('GCP_INSTANCE_NAME')
-url_endpoint = os.getenv('GCP_CLOUDFUNCTION_URL')
-
-
 @app.route('/')
 def list():
     # [START requests_start]
@@ -35,7 +30,7 @@ def list():
             response = request.execute()
 
             for name, instances_scoped_list in response['items'].items():
-                print("{}\n{}".format(name,instances_scoped_list))
+                logging.debug("{}\n{}".format(name,instances_scoped_list))
                 for i in instances_scoped_list['instances']:
                     i['zone'] = name.split('/')[-1]
                     try:
@@ -64,8 +59,8 @@ def startTS():
     compute = build('compute', 'v1', cache_discovery=False)
     params = {
         'project': os.getenv('GOOGLE_CLOUD_PROJECT'),
-        'zone': request.args.get('zone', zone),
-        'instance': request.args.get('vm', vm)
+        'zone': request.args.get('zone'),
+        'instance': request.args.get('vm')
     }
     res = compute.instances().start(**params).execute() # pylint: disable=E1101
     if 'error' in res:
@@ -78,10 +73,17 @@ def startTS():
 @app.route('/stopTS')
 def stopTS():
     # [END requests_stop]
-    url = url_endpoint + '/stopInstance'
-    response = requests.get(url, params={'zone': zone, 'vm': vm})
-    response.raise_for_status()
-    return response.text
+    compute = build('compute', 'v1', cache_discovery=False)
+    params = {
+        'project': os.getenv('GOOGLE_CLOUD_PROJECT'),
+        'zone': request.args.get('zone'),
+        'instance': request.args.get('vm')
+    }
+    res = compute.instances().start(**params).execute()
+    if 'error' in res:
+        logging.debug(res['error'])
+        return "Error occored!", 500
+    return "", 200
     # [END requests_stop]
 
 
