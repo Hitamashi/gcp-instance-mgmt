@@ -1,0 +1,10 @@
+steps:
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'bash'
+  args:
+  - ./deploy.sh
+  - remote
+  env:
+  - 'PROJECT_ID=${PROJECT_ID}'
+  - '_GAE_PROMOTE=${_GAE_PROMOTE}'
+  - '_GAE_VERSION=${_GAE_VERSION}'
