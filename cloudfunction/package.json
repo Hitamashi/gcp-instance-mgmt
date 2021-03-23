@@ -1,7 +1,0 @@
-{
-	"name": "schedule-ts",
-	"dependencies": {
-		"@google-cloud/compute": "0.7.1"
-	},
-	"version": "1.0.0"
-}
