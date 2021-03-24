@@ -18,8 +18,8 @@ remote() {
 	echo "Deploy App engine & Cron job"
 	configGenerate
 
-	_GAE_VERSION=${2:-test}
-	_GAE_PROMOTE=${3:---no-promote}
+	_GAE_VERSION=${_GAE_VERSION:-test}
+	_GAE_PROMOTE=${_GAE_PROMOTE:---no-promote}
 
 	echo "[ENV] $_GAE_VERSION"
 	echo "[CMD] cloud app deploy --project $PROJECT_ID -q app-deploy.yaml cron.yaml $_GAE_PROMOTE -v $_GAE_VERSION"
