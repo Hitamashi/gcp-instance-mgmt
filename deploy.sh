@@ -32,7 +32,7 @@ remote() {
 local() {
 	echo "Run app on local machine, port $1"
 	configGenerate
-	dev_appserver.py app-deploy.yaml --port=$1 --log_level=debug --application=composite-drive-196403
+	dev_appserver.py app-deploy.yaml --port=$1 --log_level=debug --env_var FLASK_DEBUG=1 --application=${PROJECT_ID}
 }
 
 usage() {
