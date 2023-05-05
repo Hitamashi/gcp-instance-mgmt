@@ -38,7 +38,7 @@
 				myInterval = setInterval(function(){
 					var countDown = end - new Date().getTime();
 
-					if (countDown < 0){
+					if (countDown <= 0){
 						clearInterval(myInterval);
 						location.reload();
 					}

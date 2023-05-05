@@ -22,18 +22,17 @@ remote() {
 	_GAE_PROMOTE=${_GAE_PROMOTE:---no-promote}
 
 	echo "[ENV] $_GAE_VERSION"
-	echo "[CMD] cloud app deploy --project $PROJECT_ID -q app-deploy.yaml cron.yaml $_GAE_PROMOTE -v $_GAE_VERSION"
+	echo "[CMD] cloud app deploy --project $PROJECT_ID -q app-deploy.yaml $_GAE_PROMOTE -v $_GAE_VERSION"
 	gcloud app deploy --project $PROJECT_ID \
-		-q app-deploy.yaml cron.yaml \
+		-q app-deploy.yaml \
 		$_GAE_PROMOTE \
 		-v $_GAE_VERSION
 }
 
 local() {
 	echo "Run app on local machine, port $1"
-	export GOOGLE_APPLICATION_CREDENTIALS=./gcp-secret.json
 	configGenerate
-	dev_appserver.py app-deploy.yaml --port=$1 --log_level=debug --application=composite-drive-196403
+	dev_appserver.py app-deploy.yaml --port=$1 --log_level=debug --env_var FLASK_DEBUG=1 --application=${PROJECT_ID}
 }
 
 usage() {
