@@ -8,8 +8,7 @@ import requests
 import json
 import os
 from urllib3.exceptions import HTTPError
-from googleapiclient.discovery import build
-
+from google.cloud import compute_v1
 # [END imports]
 
 app = Flask(__name__)
@@ -18,33 +17,34 @@ app = Flask(__name__)
 def list():
     # [START requests_start]
     try:
-        compute = build('compute', 'v1', cache_discovery=False)
-        params = {
-            'project': os.getenv('GOOGLE_CLOUD_PROJECT'),
-            'fields': 'items/*/instances(id,name,status,labels,networkInterfaces/accessConfigs/natIP)'
-        }
+        instance_client = compute_v1.InstancesClient()
+        request = compute_v1.AggregatedListInstancesRequest()
+        request.project = os.getenv('GOOGLE_CLOUD_PROJECT')
+        request.max_results = 10
 
-        instances = []
-        request = compute.instances().aggregatedList(**params) # pylint: disable=E1101
-        while request is not None:
-            response = request.execute()
+        agg_list = instance_client.aggregated_list(request=request)
+        all_instances = []
 
-            for name, instances_scoped_list in response['items'].items():
-                logging.debug("{}\n{}".format(name,instances_scoped_list))
-                for i in instances_scoped_list['instances']:
-                    i['zone'] = name.split('/')[-1]
+        for zone, response in agg_list:
+            if response.instances:
+                app.logger.debug(f" {zone}:")
+                for instance in response.instances:
+                    app.logger.debug(f" - {instance.name} ({instance.machine_type})")
+                    i = {
+                        "zone": zone.split('/')[-1],
+                        "name": instance.name,
+                        "status": instance.status
+                    }
                     try:
-                        i['IP'] = i['networkInterfaces'][0]['accessConfigs'][0]['natIP']
+                        i['IP'] = instance.network_interfaces[0].access_configs[0].nat_i_p
                     except Exception as ex:
                         i['IP'] = '-'
                     try:
-                        i['function'] = i['labels']['function']
+                        i['function'] = instance.labels['function']
                     except Exception as ex:
                         i['function'] = '-'
-                instances = instances + instances_scoped_list.get('instances', [])
-
-            request = compute.instances().aggregatedList_next(previous_request=request, previous_response=response)  # pylint: disable=E1101
-        return render_template("index.html", instances=instances)
+                    all_instances.append(i)
+        return render_template("index.html", instances=all_instances)
     except ValueError:
         return "Cannot get servers info"
     except HTTPError as ex:
@@ -56,15 +56,15 @@ def list():
 @app.route('/startTS')
 def startTS():
     # [START requests_get]
-    compute = build('compute', 'v1', cache_discovery=False)
-    params = {
-        'project': os.getenv('GOOGLE_CLOUD_PROJECT'),
-        'zone': request.args.get('zone'),
-        'instance': request.args.get('vm')
-    }
-    res = compute.instances().start(**params).execute() # pylint: disable=E1101
-    if 'error' in res:
-        logging.debug(res['error'])
+    instance_client = compute_v1.InstancesClient()
+    ops = instance_client.start(
+        project = os.getenv('GOOGLE_CLOUD_PROJECT'),
+        zone = request.args.get('zone'),
+        instance = request.args.get('vm')
+    )
+    res = ops.result(timeout=60)
+    if ops.error_code:
+        app.logger.debug(f"Error during START VM: [Code: {ops.error_code}]: {ops.error_message}")
         return "Error occored!", 500
     return "", 200
     # [END requests_get]
@@ -72,16 +72,16 @@ def startTS():
 
 @app.route('/stopTS')
 def stopTS():
-    # [END requests_stop]
-    compute = build('compute', 'v1', cache_discovery=False)
-    params = {
-        'project': os.getenv('GOOGLE_CLOUD_PROJECT'),
-        'zone': request.args.get('zone'),
-        'instance': request.args.get('vm')
-    }
-    res = compute.instances().start(**params).execute()
-    if 'error' in res:
-        logging.debug(res['error'])
+    # [START requests_stop]
+    instance_client = compute_v1.InstancesClient()
+    ops = instance_client.stop(
+        project = os.getenv('GOOGLE_CLOUD_PROJECT'),
+        zone = request.args.get('zone'),
+        instance = request.args.get('vm')
+    )
+    res = ops.result(timeout=60)
+    if ops.error_code:
+        app.logger.debug(f"Error during STOP VM: [Code: {ops.error_code}]: {ops.error_message}")
         return "Error occored!", 500
     return "", 200
     # [END requests_stop]
