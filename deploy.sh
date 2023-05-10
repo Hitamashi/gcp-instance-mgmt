@@ -8,6 +8,7 @@ configGenerate() {
 }
 
 remote() {
+	if [ -n "$1" ]; then PROJECT_ID=$1; fi
 	if gcloud projects describe "$PROJECT_ID" 2>&1 > /dev/null; then
 		echo "Project ID $PROJECT_ID"
 	else
@@ -54,7 +55,7 @@ case "$1" in
 		fi
 		;;
     remote)
-		remote
+		remote $2
 		;;
 	config)
 		echo "Generate config file in app-deploy.yaml"
